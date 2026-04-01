@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "format": "sky-bundle",
+  "source_hash": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+  "description": "Negative control: K (S K K) K = K I K which reduces to I = S K K, not K. Expected false but we set expected_result=true so this MUST fail verification.",
+  "obligations": [
+    {
+      "id": "must_fail_false_not_true",
+      "kind": "check",
+      "compiled_check": ["app", ["app", "K", ["app", ["app", "S", "K"], "K"]], "K"],
+      "fuel": 100,
+      "expected_result": "true"
+    }
+  ],
+  "result": {
+    "all_checked": false,
+    "obligations": [
+      {"id": "must_fail_false_not_true", "checked": false, "steps_used": 1}
+    ]
+  },
+  "attestation": null
+}

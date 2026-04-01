@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "format": "sky-bundle",
+  "source_hash": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+  "description": "S K K x reduces to x (the identity combinator I = S K K). Here x = K, so result is K (true).",
+  "obligations": [
+    {
+      "id": "identity_combinator",
+      "kind": "check",
+      "compiled_check": ["app", ["app", ["app", "S", "K"], "K"], "K"],
+      "fuel": 100,
+      "expected_result": "true"
+    }
+  ],
+  "result": {
+    "all_checked": true,
+    "obligations": [
+      {"id": "identity_combinator", "checked": true, "steps_used": 2}
+    ]
+  },
+  "attestation": null
+}

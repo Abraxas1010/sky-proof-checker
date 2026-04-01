@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "SKY Proof Checker"
+message: "If you use this verifier, please cite it using this metadata."
+type: software
+authors:
+  - family-names: "Goodman"
+    given-names: "Ryan"
+repository-code: "https://github.com/Abraxas1010/sky-proof-checker"
+license: "Apoth3osis License Stack v1"
+abstract: "Standalone verifier for Lean 4 proof obligations compiled to SKY combinators. Checks proofs using only three reduction rules (S, K, Y) without requiring Lean 4 or any compiler toolchain. Optional STARK attestation support."
+keywords:
+  - "formal verification"
+  - "combinatory logic"
+  - "SKY combinators"
+  - "proof checking"
+  - "Lean 4"
+  - "type theory"
+  - "trusted computing base"
+  - "STARK attestation"

@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "format": "sky-bundle",
+  "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "description": "Trivial: the combinator K is Church-encoded true",
+  "obligations": [
+    {
+      "id": "trivial_true",
+      "kind": "check",
+      "compiled_check": "K",
+      "fuel": 100,
+      "expected_result": "true"
+    }
+  ],
+  "result": {
+    "all_checked": true,
+    "obligations": [
+      {"id": "trivial_true", "checked": true, "steps_used": 0}
+    ]
+  },
+  "attestation": null
+}
