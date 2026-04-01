@@ -34,6 +34,14 @@ lane: `verified-sky-assurance`.
 python3 python/sky_checker.py examples/trivial_true.sky.json
 ```
 
+## Container Quick Start
+
+```bash
+docker build -t sky-proof-checker .
+docker run --rm sky-proof-checker
+docker run --rm -v "$PWD/examples:/work:ro" sky-proof-checker /work/negative_control.sky.json
+```
+
 ## Which Repo Does What?
 
 - `verified-sky-checker`: service deployment and delivery packaging
