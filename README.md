@@ -13,89 +13,50 @@
 
 Standalone SKY bundle verifier implemented in Python, Rust, TypeScript, and Go.
 
-## Implemented Scope
+## What This Repo Ships
 
-- Parse `sky-bundle` JSON files
-- Reduce SKY combinator trees using the `S`, `K`, and `Y` rules
-- Decode boolean verification results (`K = true`, `K (S K K) = false`)
-- Reject malformed or empty bundles consistently across implementations
+- independent bundle replay across four implementations
+- minimal trust boundary around SKY reduction
+- local release and customer verification checks
 
-## Out of Scope in This Repository
+## What This Repo Does Not Ship
 
 - Lean source compilation
-- STARK proof verification
-- On-chain verification
+- attestation verification in this base repo
+- on-chain verification in this base repo
 
-The `attestation` field in the bundle schema is reserved for upstream systems.
-Current CLIs ignore it and verify only the core reducer obligations.
+For cryptographic attestation and registry workflows, use the separate assurance
+lane: `verified-sky-assurance`.
 
 ## Quick Start
 
-### Python
-
 ```bash
 python3 python/sky_checker.py examples/trivial_true.sky.json
-python3 python/sky_checker.py --verbose examples/s_identity.sky.json
 ```
 
-### Rust
+## Which Repo Does What?
 
-```bash
-cd rust && cargo run -- ../examples/trivial_true.sky.json
-```
+- `verified-sky-checker`: service deployment and delivery packaging
+- `sky-proof-checker`: independent customer replay
+- `verified-sky-assurance`: separate STARK/ZK and on-chain assurance lane
 
-### TypeScript
+## Customer Verification
 
-```bash
-cd typescript
-npm install
-npx ts-node src/reducer.ts ../examples/trivial_true.sky.json
-```
+See:
 
-### Go
-
-```bash
-cd go && go run checker.go ../examples/trivial_true.sky.json
-```
-
-## Trust Model
-
-When a checker says `VERIFIED`, you are trusting:
-
-1. The three SKY reduction rules
-2. The implementation you ran
-3. Your JSON parser
-
-You are not trusting:
-
-- the Lean compiler
-- the service that produced the bundle
-- any attestation verifier in this repository, because none is implemented here
-
-## Examples
-
-| Bundle | Purpose |
-|--------|---------|
-| `trivial_true.sky.json` | `K` decodes to true |
-| `k_reduces.sky.json` | K-rule reduction |
-| `s_identity.sky.json` | `S K K x` behaves like identity |
-| `negative_control.sky.json` | intentional reject case |
+- `docs/customer_verification.md`
+- `docs/use_cases.md`
+- `docs/release_checks.md`
+- `docs/applied_team_handoff.md`
 
 ## Test Commands
 
 ```bash
 python3 tests/test_reducer.py
 python3 tests/test_cli_parity.py
+python3 tests/test_customer_examples.py
 ```
-
-`test_cli_parity.py` runs all locally available implementations and skips any
-toolchain that is missing on the current machine.
-
-## Release Operations
-
-- Release checklist: `docs/release_checks.md`
 
 ## License
 
-[Apoth3osis License Stack v1](LICENSE.md) — free for public-good and small
-business use; enterprise license required for commercial certification.
+[Apoth3osis License Stack v1](LICENSE.md)

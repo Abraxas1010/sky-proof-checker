@@ -7,7 +7,7 @@ authors:
     given-names: "Ryan"
 repository-code: "https://github.com/Abraxas1010/sky-proof-checker"
 license: "Apoth3osis License Stack v1"
-abstract: "Standalone verifier for Lean 4 proof obligations compiled to SKY combinators. Checks proofs using only three reduction rules (S, K, Y) without requiring Lean 4 or any compiler toolchain. Optional STARK attestation support."
+abstract: "Standalone verifier for SKY proof bundles compiled from Lean obligations. Replays proof checking through the three SKY reduction rules without requiring Lean 4 or the producer's compiler toolchain."
 keywords:
   - "formal verification"
   - "combinatory logic"
@@ -16,4 +16,4 @@ keywords:
   - "Lean 4"
   - "type theory"
   - "trusted computing base"
-  - "STARK attestation"
+  - "independent verification"

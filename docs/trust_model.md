@@ -4,22 +4,20 @@
 
 When you run one of the checkers in this repository, you are trusting:
 
-1. The SKY reduction rules
-2. The implementation you executed
-3. The JSON parser used by that implementation
+1. the SKY reduction rules
+2. the specific implementation you executed
+3. the JSON parser used by that implementation
 
-## Untrusted Upstream Components
-
-The checker intentionally does not trust:
+## What You Do Not Need To Trust
 
 - the Lean compiler
-- the bundle producer
-- any external compilation service
+- the service that generated the bundle
+- any upstream compilation backend
 
-If an upstream system produces a bad bundle, the reducer should reject it.
+If the producer hands you a bad bundle, the open checker should reject it.
 
-## Attestation Status
+## Assurance Lane
 
-The bundle schema allows an `attestation` field, but this repository does not
-verify those attestations. Treat attestation-bearing bundles exactly like any
-other bundle here: only the reducer obligations are checked.
+The bundle schema can carry an `attestation` field, but this repository does not
+verify that material. Cryptographic attestation and registry workflows live in
+the separate assurance lane: `verified-sky-assurance`.
