@@ -62,6 +62,17 @@ function decodeBool(c: Comb): boolean | null {
   if (c === "K") return true;
   if (isApp(c) && isApp(c[1]) && c[1][1] === "K" && c[1][2] === "S" && c[2] === "K")
     return false;
+  if (
+    isApp(c) &&
+    c[1] === "K" &&
+    isApp(c[2]) &&
+    isApp(c[2][1]) &&
+    c[2][1][1] === "S" &&
+    c[2][1][2] === "K" &&
+    c[2][2] === "K"
+  ) {
+    return false;
+  }
   return null;
 }
 
@@ -82,6 +93,10 @@ interface Bundle {
 export function verifyBundle(bundle: Bundle, verbose = false): boolean {
   if (bundle.format !== "sky-bundle") {
     console.error(`ERROR: not an SKY bundle (format=${bundle.format})`);
+    return false;
+  }
+  if (!Array.isArray(bundle.obligations) || bundle.obligations.length === 0) {
+    console.error("ERROR: no obligations in bundle");
     return false;
   }
 
