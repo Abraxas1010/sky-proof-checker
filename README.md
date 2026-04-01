@@ -94,7 +94,6 @@ toolchain that is missing on the current machine.
 ## Release Operations
 
 - Release checklist: `docs/release_checks.md`
-- CI workflow: `.github/workflows/ci.yml`
 
 ## License
 
