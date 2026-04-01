@@ -117,21 +117,28 @@ If the reducer says VERIFIED, the proof is valid — regardless of bugs in any u
 
 For use cases where independent re-verification is impractical (on-chain verification, audit trails, delegation trust), bundles can include a STARK attestation — a cryptographic proof that the SKY reduction was performed correctly.
 
+The STARK implementation uses real Goldilocks field arithmetic (p = 2^64 - 2^32 + 1), SHA-256 Merkle commitments, and FRI low-degree testing with ~120-bit security (30 queries, blowup factor 8). No hash-only placeholders.
+
 The STARK verifier checks the attestation without re-running the full reduction. This is:
 - **Faster** than re-running the reducer for large proofs
-- **Verifiable on-chain** via a Solidity contract
+- **Verifiable on-chain** via a Solidity contract with Goldilocks field arithmetic
 - **Non-repudiable** — proves the computation happened
+- **Transparent** — no trusted setup (unlike SNARKs)
 
 See [docs/stark_attestation.md](docs/stark_attestation.md) for details.
 
-## Examples
+## Examples (Reducer Demonstrations)
 
-| Bundle | What It Proves | Steps |
-|--------|---------------|-------|
+These bundles demonstrate the reducer on hand-crafted combinator trees. They are NOT compiled from Lean source — they verify the reducer's correctness on known inputs.
+
+| Bundle | What It Demonstrates | Steps |
+|--------|---------------------|-------|
 | `trivial_true.sky.json` | `K` is Church-encoded true | 0 |
 | `k_reduces.sky.json` | K rule: `K K I` reduces to `K` | 1 |
 | `s_identity.sky.json` | Identity: `S K K x` reduces to `x` | 2 |
 | `negative_control.sky.json` | Intentionally fails (wrong expected result) | 1 |
+
+Live compilation from Lean source requires the [Heyting](https://github.com/Abraxas1010/heyting) toolchain with lean-repl.
 
 ## Generating Bundles
 

@@ -62,9 +62,12 @@ behavior. The computation is pure tree transformation.
 ### The STARK Prover (When Attestation Is Used)
 
 The STARK attestation is verified by the open-source STARK verifier, which
-checks the proof without the prover. Even if the prover is buggy, the
-verifier will reject invalid proofs. The prover cannot forge valid attestations
-(assuming hash collision resistance and FRI soundness).
+checks the proof without the prover. The verifier performs real cryptographic
+checks: Goldilocks field arithmetic, SHA-256 Merkle proof verification, and
+FRI folding consistency equations at 30 random query positions (~120-bit
+security). Even if the prover is buggy, the verifier will reject invalid
+proofs. The prover cannot forge valid attestations (assuming SHA-256 collision
+resistance and FRI soundness).
 
 ## Threat Analysis
 
@@ -85,4 +88,4 @@ verifier will reject invalid proofs. The prover cannot forge valid attestations
 | Coq (direct) | ~30K lines OCaml | Coq kernel, OCaml compiler |
 | Metamath (direct) | ~500 lines C | Metamath verifier, C compiler |
 | **SKY Proof Checker** | **~50 lines** | **3 math rules + JSON parser** |
-| SKY + STARK | ~200 lines | 3 math rules + hash + FRI |
+| SKY + STARK | ~500 lines | 3 math rules + Goldilocks field + SHA-256 + FRI |
