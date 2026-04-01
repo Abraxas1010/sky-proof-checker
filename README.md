@@ -56,6 +56,17 @@ python3 python/sky_checker.py --verbose examples/s_identity.sky.json
 # VERIFIED: 1/1 obligations checked
 ```
 
+### Customer Replay
+
+This repo is the independent replay lane for delivery packages emitted by
+`verified-sky-checker`. If a customer receives `bundle.sky.json`, replay is:
+
+```bash
+python3 python/sky_checker.py bundle.sky.json
+```
+
+No Lean installation, compiler service, or proprietary runtime is required.
+
 ### Rust
 
 ```bash
@@ -139,6 +150,16 @@ These bundles demonstrate the reducer on hand-crafted combinator trees. They are
 | `negative_control.sky.json` | Intentionally fails (wrong expected result) | 1 |
 
 Live compilation from Lean source requires the [Heyting](https://github.com/Abraxas1010/heyting) toolchain with lean-repl.
+
+## Delivery-Pack Contract
+
+The service repo should package replayable deliveries with:
+
+- `bundle.sky.json`
+- `manifest.json`
+- a replay command that invokes `python3 python/sky_checker.py bundle.sky.json`
+
+This repo is the verifier named by that contract.
 
 ## Generating Bundles
 
