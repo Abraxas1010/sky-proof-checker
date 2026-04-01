@@ -84,6 +84,9 @@ func decodeBool(c *Comb) *bool {
 	if isApp(c) && isApp(c.F) && c.F.F != nil && c.F.F.Atom == "K" && c.F.A != nil && c.F.A.Atom == "S" && c.A != nil && c.A.Atom == "K" {
 		return &f
 	}
+	if isApp(c) && c.F != nil && c.F.Atom == "K" && c.A != nil && isApp(c.A) && c.A.F != nil && isApp(c.A.F) && c.A.F.F != nil && c.A.F.F.Atom == "S" && c.A.F.A != nil && c.A.F.A.Atom == "K" && c.A.A != nil && c.A.A.Atom == "K" {
+		return &f
+	}
 	return nil
 }
 
@@ -159,6 +162,10 @@ func main() {
 
 	if bundle.Format != "sky-bundle" {
 		fmt.Fprintf(os.Stderr, "ERROR: not an SKY bundle (format=%s)\n", bundle.Format)
+		os.Exit(1)
+	}
+	if len(bundle.Obligations) == 0 {
+		fmt.Fprintln(os.Stderr, "ERROR: no obligations in bundle")
 		os.Exit(1)
 	}
 

@@ -74,10 +74,25 @@ fn reduce(mut c: Comb, fuel: usize) -> (Comb, usize) {
 fn decode_bool(c: &Comb) -> Option<bool> {
     match c {
         Comb::K => Some(true),
-        Comb::App(f, _) => {
+        Comb::App(f, a) => {
             if let Comb::App(ff, fa) = f.as_ref() {
-                if matches!(ff.as_ref(), Comb::K) && matches!(fa.as_ref(), Comb::S) {
+                if matches!(ff.as_ref(), Comb::K)
+                    && matches!(fa.as_ref(), Comb::S)
+                    && matches!(a.as_ref(), Comb::K)
+                {
                     return Some(false);
+                }
+            }
+            if matches!(f.as_ref(), Comb::K) {
+                if let Comb::App(i_f, i_a) = a.as_ref() {
+                    if let Comb::App(ii_f, ii_a) = i_f.as_ref() {
+                        if matches!(ii_f.as_ref(), Comb::S)
+                            && matches!(ii_a.as_ref(), Comb::K)
+                            && matches!(i_a.as_ref(), Comb::K)
+                        {
+                            return Some(false);
+                        }
+                    }
                 }
             }
             None
@@ -152,6 +167,10 @@ fn main() {
 
     if bundle.format != "sky-bundle" {
         eprintln!("ERROR: not an SKY bundle (format={})", bundle.format);
+        process::exit(1);
+    }
+    if bundle.obligations.is_empty() {
+        eprintln!("ERROR: no obligations in bundle");
         process::exit(1);
     }
 
