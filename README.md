@@ -66,6 +66,13 @@ See:
 - `docs/use_cases.md`
 - `docs/release_checks.md`
 - `docs/applied_team_handoff.md`
+- `docs/production_team_handoff.md`
+
+## Production Team Summary
+
+- deploy this as an independent replay tool or customer-side verifier, not as the buyer-facing API
+- use it to back product claims about replayability, auditability, and low-trust verification
+- run `python3 -m unittest discover -s tests -p 'test_*.py'` before shipping verifier updates
 
 ## Test Commands
 
