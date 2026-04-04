@@ -26,7 +26,14 @@ def is_app(c: Any) -> bool:
 # ── Reduction engine (leftmost-outermost) ────────────────────────────
 
 def step(c: Any) -> Any | None:
-    """One leftmost-outermost SKY reduction step. Returns None if normal form."""
+    """One leftmost-outermost SKY reduction step (full normal-order).
+
+    Returns None if the term is in normal form.
+
+    Matches the Lean reference ``Comb.stepEdgesList`` which enumerates:
+    ``rootEdgesList t ++ stepEdgesList f ++ stepEdgesList a``
+    — root redexes first, then left (func) subtree, then right (arg) subtree.
+    """
     if not is_app(c):
         return None
     f, a = c[1], c[2]
@@ -43,23 +50,13 @@ def step(c: Any) -> Any | None:
             # S rule: S f g x -> f x (g x)
             if fff == "S":
                 return app(app(ffa, a), app(fa, a))
-            # Reduce deeper in fff position
-            r = step(ff)
-            if r is not None:
-                return app(app(r, fa), a)
-            r = step(f)
-            if r is not None:
-                return app(r, a)
-            return None
-        # Reduce in f position
-        r = step(f)
-        if r is not None:
-            return app(r, a)
-        return None
-    # Reduce in f position
+    # No root redex — try func subtree, then arg subtree
     r = step(f)
     if r is not None:
         return app(r, a)
+    r = step(a)
+    if r is not None:
+        return app(f, r)
     return None
 
 def reduce(c: Any, fuel: int) -> tuple[Any, int]:

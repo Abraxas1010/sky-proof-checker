@@ -19,6 +19,13 @@ function app(f: Comb, a: Comb): Comb {
 
 // ── Reduction engine (leftmost-outermost) ───────────────────────────
 
+/**
+ * One leftmost-outermost SKY reduction step (full normal-order).
+ *
+ * Matches the Lean reference `Comb.stepEdgesList` which enumerates:
+ * `rootEdgesList t ++ stepEdgesList f ++ stepEdgesList a`
+ * — root redexes first, then left (func) subtree, then right (arg) subtree.
+ */
 function step(c: Comb): Comb | null {
   if (!isApp(c)) return null;
   const [, f, a] = c;
@@ -35,16 +42,15 @@ function step(c: Comb): Comb | null {
       const [, fff, ffa] = ff;
       // S rule: S f g x -> f x (g x)
       if (fff === "S") return app(app(ffa, a), app(fa, a));
-      const r = step(ff);
-      if (r !== null) return app(app(r, fa), a);
     }
-    const r = step(f);
-    if (r !== null) return app(r, a);
-    return null;
   }
 
-  const r = step(f);
-  return r !== null ? app(r, a) : null;
+  // No root redex — try func subtree, then arg subtree
+  const rf = step(f);
+  if (rf !== null) return app(rf, a);
+  const ra = step(a);
+  if (ra !== null) return app(f, ra);
+  return null;
 }
 
 function reduce(c: Comb, fuel: number): { result: Comb; steps: number } {

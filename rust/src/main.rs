@@ -22,6 +22,11 @@ fn app(f: Comb, a: Comb) -> Comb {
 
 // ── Reduction engine (leftmost-outermost) ───────────────────────────
 
+/// One leftmost-outermost SKY reduction step (full normal-order).
+///
+/// Matches the Lean reference `Comb.stepEdgesList` which enumerates:
+/// `rootEdgesList t ++ stepEdgesList f ++ stepEdgesList a`
+/// — root redexes first, then left (func) subtree, then right (arg) subtree.
 fn step(c: &Comb) -> Option<Comb> {
     match c {
         Comb::App(f, a) => {
@@ -42,16 +47,14 @@ fn step(c: &Comb) -> Option<Comb> {
                             app(fa.as_ref().clone(), a.as_ref().clone()),
                         ));
                     }
-                    // Reduce deeper
-                    if let Some(r) = step(ff) {
-                        return Some(app(app(r, fa.as_ref().clone()), a.as_ref().clone()));
-                    }
                 }
-                if let Some(r) = step(f) {
-                    return Some(app(r, a.as_ref().clone()));
-                }
-            } else if let Some(r) = step(f) {
+            }
+            // No root redex — try func subtree, then arg subtree
+            if let Some(r) = step(f) {
                 return Some(app(r, a.as_ref().clone()));
+            }
+            if let Some(r) = step(a) {
+                return Some(app(f.as_ref().clone(), r));
             }
             None
         }

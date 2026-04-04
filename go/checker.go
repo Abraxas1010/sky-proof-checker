@@ -27,6 +27,11 @@ func isApp(c *Comb) bool   { return c.F != nil }
 
 // ── Reduction engine (leftmost-outermost) ───────────────────────────
 
+// step performs one leftmost-outermost SKY reduction step (full normal-order).
+//
+// Matches the Lean reference Comb.stepEdgesList which enumerates:
+// rootEdgesList t ++ stepEdgesList f ++ stepEdgesList a
+// — root redexes first, then left (func) subtree, then right (arg) subtree.
 func step(c *Comb) *Comb {
 	if !isApp(c) {
 		return nil
@@ -48,17 +53,14 @@ func step(c *Comb) *Comb {
 			if fff.Atom == "S" {
 				return app(app(ffa, a), app(fa, a))
 			}
-			if r := step(ff); r != nil {
-				return app(app(r, fa), a)
-			}
 		}
-		if r := step(f); r != nil {
-			return app(r, a)
-		}
-		return nil
 	}
+	// No root redex — try func subtree, then arg subtree
 	if r := step(f); r != nil {
 		return app(r, a)
+	}
+	if r := step(a); r != nil {
+		return app(f, r)
 	}
 	return nil
 }
